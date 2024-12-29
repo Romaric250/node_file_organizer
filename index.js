@@ -1,12 +1,13 @@
+const { log } = require('node:console')
 const fs = require('node:fs')
 
 
 const dirdata = {}
 let filedata = []
 
+const path = './tester'
 
-
-const data = fs.readdirSync('./tester', (error, files) => {
+const data = fs.readdirSync(path, (error, files) => {
 
 
     if (error) {
@@ -56,6 +57,38 @@ data.map((file) => {
     }
 
 })
+
+
+
+
+
+
+
+// fs.mkdir('./path1',(error) => {
+//     if (error){
+//         console.log('error', error.message)
+//     }
+//     console.log('dir created successfully')
+// })
+
+
+const neset = Object.entries(dirdata)
+console.log("some new", Object.entries(dirdata));
+
+neset.map((ext) => {
+    fs.mkdir(`${path}/${ext[0]}-files`, (error) => {
+        if(error){
+            console.log(error.message)
+        }
+        console.log(`folder <${ext[0]}-files> created .....`)
+    })
+
+    console.log(ext[1])
+
+})
+
+
+
 
 console.log("dir data here", dirdata)
 
