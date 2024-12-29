@@ -4,8 +4,11 @@
   "description": "organize your files with a single command",
   "main": "index.js",
   "scripts": {
-    "start": "node --watch index.js"
+    "start": "nodemon index.js"
   },
   "author": "Romaric Lonfonyuy",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
 }
