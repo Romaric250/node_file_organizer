@@ -83,7 +83,19 @@ neset.map((ext) => {
         console.log(`folder <${ext[0]}-files> created .....`)
     })
 
-    console.log(ext[1])
+    ext[1].map((file_ext) => {
+        fs.rename(`${path}/${file_ext}.${ext[0]}`,`${path}/${ext[0]}-files`,(error) => {
+            if(error){
+                console.log(error.message)
+            }
+            console.log(`moving ${file_ext}.${ext[0]} to ${path}/${ext[0]}-files/`)
+
+        })
+
+    })
+
+
+    // console.log(ext[1])
 
 })
 
