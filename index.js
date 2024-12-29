@@ -26,16 +26,10 @@ data.map((file) => {
     console.log("splitfile here", splitfile)
 
 
-
-    console.log("test")
-
-
-
     if (splitfile.length > 1) {
 
         console.log('index 1', splitfile[1])
 
-        
 
         // if (splitfile[1] in Object.keys(dirdata)) {
         //     const oldata = dirdata[splitfile[1]]
@@ -43,29 +37,27 @@ data.map((file) => {
         //     dirdata[splitfile[1]] = [...oldata, splitfile[0]]
 
         // }
-        
 
-        dirdata[splitfile[1]] = [splitfile[0], 2]
+        const doesextensionexist = Object.keys(dirdata).find((extension) => extension === `${splitfile[1]}`)
+
+        if (doesextensionexist != undefined){
+            const oldata = dirdata[splitfile[1]]
+            console.log('old data', oldata)
+            console.log('something is cooking')
+            //set and add the new name to the arr
+
+            dirdata[splitfile[1]] = [...oldata, splitfile[0]]
+           return
+        
+        }
+
+        dirdata[splitfile[1]] = [splitfile[0]]
 
     }
 
-
 })
 
-
-console.log("dat here", data)
-
-const obj = Object.keys(dirdata)
-
-const fi = obj.find((el) => el === 'txt')
-
-console.log("found", fi)
-
-
-
-
-console.log("dir data", Object.keys(dirdata))
-
+console.log("dir data here", dirdata)
 
 
 
