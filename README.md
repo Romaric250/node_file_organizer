@@ -23,16 +23,16 @@ File Organiser is a Node.js-based utility to organize files in a specified direc
 
 ## Usage
 
-1. Set the `path` variable in the script to the directory you want to organize:
+1. copy the `path` form the directory you want to organize:
 
    ```javascript
-   const path = "C:\\Users\\YourUsername\\Documents"; // Replace with your target directory
+   e.g = "C:\\Users\\YourUsername\\Documents"; 
    ```
 
-2. Run the script using Node.js:
+2. Run the script using Node.js and enter the path you copied:
 
    ```bash
-   node file-organiser.js
+   node index.js
    ```
 
 3. The script will create folders for each file extension and move the corresponding files into them. For example:

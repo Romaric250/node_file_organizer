@@ -2,6 +2,7 @@ const { log } = require('node:console');
 const fs = require('node:fs');
 const { exit } = require('node:process');
 const paths = require('path');
+const organize = require('organiseme')
 
 const dirdata = {};
 let filedata = [];
