@@ -1,10 +1,10 @@
 {
-  "name": "node_file_organizer",
+  "name": "organiseme",
   "version": "1.0.0",
   "description": "organize your files with a single command",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "organise": "nodemon index.js"
   },
   "author": "Romaric Lonfonyuy",
   "license": "ISC",
