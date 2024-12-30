@@ -12,74 +12,133 @@ const dirdata = {};
 let filedata = [];
 
 // Prompt the user for the path
-rl.question('Enter the path to organize: ', (inputPath) => {
-    const path = inputPath.trim();
+rl.question('🌟 Enter the path to organize: ', (inputPath) => {
+    const path = inputPath.trim(); // Store path here for later use
 
     // Read the directory
-    const data = fs.readdirSync(path, (error, files) => {
+    fs.readdir(path, (error, files) => {
         if (error) {
-            console.log(error.message);
-        }
-
-        filedata = [...files];
-        return filedata;
-    });
-
-    data.map((file) => {
-        const splitfile = file.split('.');
-        console.log("splitfile here", splitfile);
-
-        if (splitfile.length > 1) {
-            console.log('index 1', splitfile[1]);
-
-            const doesextensionexist = Object.keys(dirdata).find((extension) => extension === `${splitfile[1]}`);
-
-            if (doesextensionexist != undefined) {
-                const oldata = dirdata[splitfile[1]];
-                console.log('old data', oldata);
-                console.log('something is cooking');
-                // Set and add the new name to the array
-
-                dirdata[splitfile[1]] = [...oldata, splitfile[0]];
-                return;
-            }
-
-            dirdata[splitfile[1]] = [splitfile[0]];
-        }
-    });
-
-    const neset = Object.entries(dirdata);
-    console.log("some new", Object.entries(dirdata));
-
-    const processExtensions = (index) => {
-        if (index >= neset.length) {
+            console.log('❌ Error:', error.message);
             rl.close();
             return;
         }
 
-        const [ext, files] = neset[index];
+        filedata = files.filter(file => {
+            // Skip folders and files without extensions
+            return fs.lstatSync(paths.join(path, file)).isFile() && file.includes('.');
+        });
 
-        rl.question(`Enter new folder name for extension ".${ext}" (press Enter to keep "${ext}-files"): `, (newFolderName) => {
+        if (filedata.length === 0) {
+            console.log('⚠️ No files to organize! Exiting...');
+            rl.close();
+            return;
+        }
+
+        filedata.map((file) => {
+            const splitfile = file.split('.');
+
+            // Process only files with an extension
+            if (splitfile.length > 1) {
+                const ext = splitfile[1];
+                const filename = splitfile[0];
+
+                const doesExtensionExist = Object.keys(dirdata).find((extension) => extension === ext);
+
+                if (doesExtensionExist) {
+                    dirdata[ext] = [...dirdata[ext], filename];
+                } else {
+                    dirdata[ext] = [filename];
+                }
+            }
+        });
+
+        // Ask if the user wants to customize folder names
+        rl.question('🔧 Do you want to customize folder names for file extensions? (yes to customize, press Enter to use defaults): ', (customizeChoice) => {
+            if (customizeChoice.toLowerCase() === 'yes') {
+                console.log('🎨 Customization mode: You can change folder names for each file extension.');
+                // Proceed with customization
+                processExtensionsWithCustomization(path);
+            } else {
+                console.log('✅ Using default folder names for extensions...');
+                // Proceed with default folder names
+                processExtensionsWithDefaults(path);
+            }
+        });
+    });
+});
+
+// Function to process extensions with default folder names
+const processExtensionsWithDefaults = (path) => {
+    const extensions = Object.entries(dirdata);
+
+    const processExtensions = (index) => {
+        if (index >= extensions.length) {
+            console.log('✅ All files have been organized successfully with default folder names! Closing...');
+            rl.close();
+            return;
+        }
+
+        const [ext, files] = extensions[index];
+        const folderName = `${ext}-files`; // Default folder name
+
+        fs.mkdir(paths.join(path, folderName), { recursive: true }, (error) => {
+            if (error) {
+                console.log('❌ Error creating folder:', error.message);
+            } else {
+                console.log(`📂 Folder "<${folderName}>" created!`);
+            }
+
+            files.map((file_ext) => {
+                const targetPath = paths.join(path, folderName, `${file_ext}.${ext}`);
+                const filePath = paths.join(path, `${file_ext}.${ext}`);
+
+                try {
+                    fs.renameSync(filePath, targetPath); // Move the file synchronously
+                    console.log(`🚚 Moved ${file_ext}.${ext} to ${targetPath}`);
+                } catch (error) {
+                    console.log(`❌ Error moving file ${file_ext}.${ext}:`, error.message);
+                }
+            });
+
+            processExtensions(index + 1);
+        });
+    };
+
+    processExtensions(0);
+};
+
+// Function to process extensions with customized folder names
+const processExtensionsWithCustomization = (path) => {
+    const extensions = Object.entries(dirdata);
+
+    const processExtensions = (index) => {
+        if (index >= extensions.length) {
+            console.log('✅ All files have been organized successfully with customized folder names! Closing...');
+            rl.close();
+            return;
+        }
+
+        const [ext, files] = extensions[index];
+
+        rl.question(`🎨 Enter new folder name for extension ".${ext}" (press Enter to keep "${ext}-files"): `, (newFolderName) => {
             const folderName = newFolderName.trim() || `${ext}-files`;
 
-            fs.mkdir(`${path}/${folderName}`, { recursive: true }, (error) => {
+            fs.mkdir(paths.join(path, folderName), { recursive: true }, (error) => {
                 if (error) {
-                    console.log(error.message);
+                    console.log('❌ Error creating folder:', error.message);
                 } else {
-                    console.log(`folder <${folderName}> created .....`);
+                    console.log(`📂 Folder "<${folderName}>" created!`);
                 }
 
                 files.map((file_ext) => {
-                    const targetpath = paths.join(path, folderName, `${file_ext}.${ext}`); // Include filename in target path
-                    const filepath = paths.join(path, `${file_ext}.${ext}`); // Source file path
-
-                    console.log("file path here", filepath);
+                    const targetPath = paths.join(path, folderName, `${file_ext}.${ext}`);
+                    const filePath = paths.join(path, `${file_ext}.${ext}`);
 
                     try {
-                        fs.renameSync(filepath, targetpath); // Move the file synchronously
-                        console.log(`moving ${file_ext}.${ext} to ${targetpath}`);
+                        fs.renameSync(filePath, targetPath); // Move the file synchronously
+                        console.log(`🚚 Moved ${file_ext}.${ext} to ${targetPath}`);
                     } catch (error) {
-                        console.log(`Error moving file ${file_ext}.${ext}:`, error.message);
+                        console.log(`❌ Error moving file ${file_ext}.${ext}:`, error.message);
                     }
                 });
 
@@ -89,4 +148,4 @@ rl.question('Enter the path to organize: ', (inputPath) => {
     };
 
     processExtensions(0);
-});
+};
