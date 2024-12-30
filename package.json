@@ -1,6 +1,6 @@
 {
   "name": "organiseme",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "organize your files with a single command",
   "main": "index.js",
   "scripts": {
