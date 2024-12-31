@@ -34,6 +34,11 @@ File Organiser is a Node.js-based utility to organize files in a specified direc
    ```bash
    node index.js
    ```
+   or 
+   ```bash
+   npm i organiseme
+   
+   npx organiseme
 
 3. The script will create folders for each file extension and move the corresponding files into them. For example:
 

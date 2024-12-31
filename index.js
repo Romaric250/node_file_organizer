@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const { log } = require('node:console');
 const fs = require('node:fs');
 const paths = require('path');

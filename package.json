@@ -21,6 +21,9 @@
     "type": "git",
     "url": "https://github.com/Romaric250/organiseme.git"
   },
+  "bin": {
+    "organiseme": "./index.js"
+  },
   "bugs": {
     "url": "https://github.com/Romaric250/organiseme/issues"
   },
