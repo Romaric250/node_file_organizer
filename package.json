@@ -1,12 +1,33 @@
 {
   "name": "organiseme",
   "version": "1.0.2",
-  "description": "organize your files with a single command",
+  "description": "A minimalistic CLI to organize your files with a single command",
   "main": "index.js",
+
+"keywords": [
+  "file sorter",
+  "organise directory",
+  "file organization",
+  "nodejs file organizer"
+],
+
   "scripts": {
-    "organise": "nodemon index.js"
+    "organise": "index.js"
   },
-  "author": "Romaric Lonfonyuy",
+  "author": {
+    "name": "Romaric Lonfonyuy",
+    "email": "lonfonyuyromaric@gmail.com",
+    "url": "https://github.com/Romaric250"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Romaric250/organiseme.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/Romaric250/organiseme/issues"
+  },
+
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.1.9"
